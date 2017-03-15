@@ -1,0 +1,3 @@
+# System aliases working under ubuntu 16.04
+alias hibernate='sudo echo "Hibernating..."; gnome-screensaver-command -l; sudo pm-hibernate;'
+alias restart_wifi='sudo echo "Restarting Wifi..."; sudo /etc/init.d/network-manager restart;'
