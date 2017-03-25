@@ -1,13 +1,13 @@
 #!/bin/bash
 
-MY_PATH=$(pwd)/$(dirname $0)
+SCRIPTPATH="$( cd "$(dirname "$0")" ; pwd -P )"
 
 echo 'Adding custom_aliases files to the .bash_aliases file'
 if [ -f $HOME/.bash_aliases ]; then
-  echo -e '\n\n' 				  >> $HOME/.bash_aliases 
-  cat $MY_PATH/custom_aliases >> $HOME/.bash_aliases             
+  echo -e '\n\n' 				 >> $HOME/.bash_aliases 
+  cat $SCRIPTPATH/custom_aliases >> $HOME/.bash_aliases             
 else
-  cp  $MY_PATH/custom_aliases $HOME/.bash_aliases
+  cp  $SCRIPTPATH/custom_aliases $HOME/.bash_aliases
 fi   
 
 
