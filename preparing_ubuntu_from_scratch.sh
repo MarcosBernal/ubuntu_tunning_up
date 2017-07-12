@@ -30,7 +30,7 @@ tar -xvzf robomongo-1.0.0-linux-x86_64-89f24ea.tar.gz
 chmod +x robomongo-1.0.0-linux-x86_64-89f24ea/bin/robomongo
 sudo mkdir /usr/local/bin/robomongo-1.0.0
 sudo mv  robomongo-1.0.0-linux-x86_64-89f24ea/* /usr/local/robomongo-1.0.0
-echo "export PATH='/usr/local/robomongo-1.0.0/bin:\$PATH'" >> ~/.bashrc
+echo export PATH=/usr/local/robomongo-1.0.0/bin:$PATH >> ~/.bashrc
 
 
 echo "Downloading and installing Dropbox..."
