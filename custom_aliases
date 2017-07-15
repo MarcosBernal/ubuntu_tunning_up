@@ -17,3 +17,4 @@ else
 fi
 }; _checksum_folder $1'
 # the idea is you hash all the files cut out the hashes one per line, sort them and hash that yielding a single hash. this doesn't depend on the names of the files. From http://serverfault.com/questions/303365/calculate-md5-checksum-of-a-directory
+## Look how to improve with ""tar -cf - somedir | md5sum"" as it checks the metadata
