@@ -9,6 +9,8 @@ echo "Moving to home folder"
 cd ~
 pwd
 
+DIST_CODE_NAME=$(lsb_release -cs) #$(echo $(lsb_release -c) | cut -d " " -f 2)
+
 echo "Requiring su access to download, install and update programs"
 sudo apt-get update > /dev/null
 
@@ -28,7 +30,7 @@ sudo apt-get update > /dev/null
 
 echo "Downloading and installing R-Language..."
 sudo apt-get install libgstreamer0.10-0 libgstreamer-plugins-base0.10-0 -y > /dev/null # Dependencies
-echo "deb https://cran.rediris.es/bin/linux/ubuntu xenial/" >> /etc/apt/sources.list
+echo "deb https://cran.rediris.es/bin/linux/ubuntu $DIST_CODE_NAME/" | sudo tee -a /etc/apt/sources.list
 gpg --keyserver keyserver.ubuntu.com --recv-key E084DAB9
 gpg -a --export E084DAB9 | sudo apt-key add -
 sudo apt-get update
@@ -43,7 +45,7 @@ rm rstudio-1.0.143-amd64.deb
 
 echo "Downloading and installing MongoDB..."
 sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 0C49F3730359A14518585931BC711F9BA15703C6
-echo "deb [ arch=amd64,arm64 ] http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.4 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.4.list
+echo "deb [ arch=amd64,arm64 ] http://repo.mongodb.org/apt/ubuntu $DIST_CODE_NAME/mongodb-org/3.4 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.4.list
 sudo apt-get update
 sudo apt-get install -y mongodb-org
 
@@ -104,6 +106,13 @@ curl https://repo.skype.com/data/SKYPE-GPG-KEY | sudo apt-key add -
 wget -O skype_delete.deb https://repo.skype.com/latest/skypeforlinux-64.deb
 sudo dpkg -i skype_delete.deb
 rm skype_delete.deb
+
+echo "Installing virtualbox"
+echo "deb http://download.virtualbox.org/virtualbox/debian $DIST_CODE_NAME contrib" | sudo tee -a /etc/apt/sources.list
+wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | sudo apt-key add -
+sudo apt-get update
+sudo apt-get install virtualbox-5.1
+
 
 #echo "Downloading and installing OpenCV and opencv_contrib"
 #mkdir ~/opencv
