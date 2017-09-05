@@ -15,7 +15,7 @@ echo "Requiring su access to download, install and update programs"
 sudo apt-get update > /dev/null
 
 echo "Installing usefull packages with apt-get..."
-sudo apt-get install git python2.7 python2.7-dev python-pip pinta gimp -y > /dev/null
+sudo apt-get install git python2.7 python2.7-dev python-pip pinta gimp inkscape -y > /dev/null
 sudo apt-get install libboost-dev libboost-filesystem-dev -y > /dev/null
 pip install --upgrade pip > /dev/null;
 
@@ -37,7 +37,7 @@ sudo apt-get update
 sudo apt-gey install r-base -y
 
 echo "Downloading and installing Rstudio v1.0.143..."
-wget https://download1.rstudio.org/rstudio-1.0.143-amd64.deb 
+wget https://download1.rstudio.org/rstudio-1.0.143-amd64.deb
 sudo apt-get install libjpeg62 r-base -y # Dependency of rstudio
 sudo dpkg -i rstudio-1.0.143-amd64.deb > /dev/null
 rm rstudio-1.0.143-amd64.deb
@@ -95,14 +95,14 @@ tar -xvzf CLion-2017.1.2.tar.gz
 ./clion-2017.1.2/bin/clion.sh &
 rm CLion-2017.1.2.tar.gz
 
-echo "Downloading and installing Pycharm 2017.1..."
-wget https://download-cf.jetbrains.com/python/pycharm-community-2017.1.1.tar.gz
-tar -xvzf pycharm-community-2017.1.1.tar.gz
-./pycharm-community-2017.1.1/bin/pycharm.sh &
-rm pycharm-community-2017.1.1.tar.gz
+echo "Downloading and installing Pycharm 2017.2..."
+wget -O pycharm_ide https://download-cf.jetbrains.com/python/pycharm-professional-2017.2.1.tar.gz
+tar -xvzf pycharm_ide
+./pycharm-community-2017.2.1/bin/pycharm.sh &
+rm pycharm_ide
 
 echo "Downloading and installing Skype..."
-curl https://repo.skype.com/data/SKYPE-GPG-KEY | sudo apt-key add - 
+curl https://repo.skype.com/data/SKYPE-GPG-KEY | sudo apt-key add -
 wget -O skype_delete.deb https://repo.skype.com/latest/skypeforlinux-64.deb
 sudo dpkg -i skype_delete.deb
 rm skype_delete.deb
@@ -113,11 +113,53 @@ wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | sudo apt-
 sudo apt-get update
 sudo apt-get install virtualbox-5.1
 
+echo "Installing VLC player and OpenShot video editor"
+sudo apt-get install vlc openshot -y
+
+echo "Installing bluetooth libraries and dependencies in order to use PYBLUEZ"
+sudo apt-get install bluez libbluetooth-dev -y
+sudo pip install pybluez
+
+echo "Installing ruby and rails"
+sudo apt-get update
+sudo apt-get install git-core curl zlib1g-dev build-essential libssl-dev libreadline-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt1-dev libcurl4-openssl-dev python-software-properties libffi-dev nodejs
+cd
+git clone https://github.com/rbenv/rbenv.git ~/.rbenv
+echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc
+echo 'eval "$(rbenv init -)"' >> ~/.bashrc
+exec $SHELL
+git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build
+echo 'export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"' >> ~/.bashrc
+exec $SHELL
+rbenv install 2.4.1
+rbenv global 2.4.1
+ruby -v
+gem install bundler
+rbenv rehash
+sudo apt-get install -y nodejs
+gem install rails -v 5.1.3
+rbenv rehash
+sudo apt-get install mysql-server mysql-client libmysqlclient-dev
+
+
+echo "Downloading and Installing Atom Editor"
+wget -O atom_deb https://atom.io/download/deb
+sudo dpkg -i atom_deb
+rm atom_deb
+
+SOFT="WebStorm"; VER="2017.2.3"
+echo "Downloading and installing $SOFT-$VER..."
+wget -O $SOFT-IDE.tar.gz https://download-cf.jetbrains.com/webstorm/WebStorm-$VER.tar.gz
+mkdir $SOFT\_$VER && tar xf $SOFT-IDE.tar.gz -C $SOFT\_$VER --strip-components 1
+./$SOFT\_$VER/bin/webstorm.sh &
+rm $SOFT-IDE.tar.gz
+
+
 
 #echo "Downloading and installing OpenCV and opencv_contrib"
 #mkdir ~/opencv
 #git clone https://github.com/daveselinger/opencv.git ~/opencv/opencv-3.1.0/
-#cd ~/opencv/opencv-3.1.0/ && git checkout 3.1.0-with-cuda8 
+#cd ~/opencv/opencv-3.1.0/ && git checkout 3.1.0-with-cuda8
 #
 #cd ..
 #git clone https://github.com/opencv/opencv_contrib opencv_contrib
@@ -125,4 +167,3 @@ sudo apt-get install virtualbox-5.1
 #
 ## After compiling
 #sudo ln -s ~/opencv/opencv-3.1.0/3rdparty/ippicv/unpack/ippicv_lnx/lib/intel64/libippicv.a /usr/local/lib/
-
