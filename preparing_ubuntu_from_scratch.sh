@@ -35,6 +35,13 @@ if ! [ -x "$(command -v subl)" ]; then
   sudo apt-get update > /dev/null
 fi
 
+if ! [ -x "$(command -v java)" ]; then
+  echo "Downloading and installing JAVA 8 from ORACLE..."
+  sudo add-apt-repository ppa:webupd8team/java
+  sudo apt-get update > /dev/null
+  sudo apt-get install oracle-java8-installer -y > /dev/null
+fi
+
 
 if ! [ -x "$(command -v R)" ]; then
   echo "Downloading and installing R-Language..."
@@ -180,7 +187,7 @@ fi
 
 function JETBRAINS_SOFT {
 	if [ $# -ne 4 ]; then
-	  echo "Need SOFT, APP and VER"  
+	  echo "Need SOFT, APP, VER and URL"
 	  return 1
 	fi
 	SOFT=$1; APP=$2; VER=$3; URL=$4
