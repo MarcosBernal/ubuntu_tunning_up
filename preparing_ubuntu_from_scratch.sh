@@ -1,10 +1,11 @@
 #!/bin/bash
 
-if ! [ -x "$(command -v monitor)" ]; then
-  echo "Adding custom aliases"
-  ./installing_aliases.sh
-  source ~/.bashrc
-fi
+
+#echo "Checking if aliases are in bashrc"
+shopt -s expand_aliases
+source ~/.bash_aliases
+! command -v "${BASH_ALIASES[monitor]}" > /dev/null && ./installing_aliases.sh
+
 
 echo "Moving to home folder"
 cd ~
@@ -34,6 +35,7 @@ if ! [ -x "$(command -v subl)" ]; then
   rm sublime-text_build-3126_amd64.deb
   sudo apt-get update > /dev/null
 fi
+
 
 if ! [ -x "$(command -v java)" ]; then
   echo "Downloading and installing JAVA 8 from ORACLE..."
@@ -72,7 +74,7 @@ if ! [ -x "$(command -v mongo)" ]; then
 fi
 
 
-if ! [ -x "$(command -v robomongo)"]
+if ! [ -x "$(command -v robomongo)" ]; then
   echo "Downloading and installing RoboMongo IDE..."
   wget -O robomongo.tar.gz https://download.robomongo.org/1.0.0/linux/robomongo-1.0.0-linux-x86_64-89f24ea.tar.gz > /dev/null
   mkdir -p robomongo_folder && tar -xvzf robomongo.tar.gz -C robomongo_folder --strip-components 1
@@ -82,6 +84,8 @@ if ! [ -x "$(command -v robomongo)"]
   echo export PATH=/usr/local/bin/robomongo-1.0.0/bin:$PATH >> ~/.bashrc
   rm robomongo.tar.gz
   rm -r robomongo_folder
+else
+  echo "Already INSTALLED robomongo"
 fi
 
 
@@ -120,14 +124,15 @@ if ! [ -x "$(command -v scala)" ]; then
 fi
 
 
-echo "Downloading and installing QtCreator..."
-wget http://download.qt.io/official_releases/qt/5.8/5.8.0/qt-opensource-linux-x64-5.8.0.run
-chmod +x qt-opensource-linux-x64-5.8.0.run
-./qt-opensource-linux-x64-5.8.0.run && rm qt-opensource-linux-x64-5.8.0.run &
+if false; then #Need condition
+  echo "Downloading and installing QtCreator..."
+  wget http://download.qt.io/official_releases/qt/5.8/5.8.0/qt-opensource-linux-x64-5.8.0.run
+  chmod +x qt-opensource-linux-x64-5.8.0.run
+  ./qt-opensource-linux-x64-5.8.0.run && rm qt-opensource-linux-x64-5.8.0.run &
+fi
 
-
-if ! [ -x "$(command -v skype)" ]; then
-  echo "Downloading and installing Skype..."
+if ! [ -x "$(command -v skypeforlinux)" ]; then
+  echo "Downloading and installing skypeforlinux..."
   curl https://repo.skype.com/data/SKYPE-GPG-KEY | sudo apt-key add -
   wget -O skype_delete.deb https://repo.skype.com/latest/skypeforlinux-64.deb
   sudo dpkg -i skype_delete.deb
@@ -145,33 +150,33 @@ fi
 
 
 echo "Installing VLC player and OpenShot video editor"
-sudo apt-get install vlc openshot -y
+sudo apt-get install vlc openshot -y > /dev/null
 
 
 echo "Installing bluetooth libraries and dependencies in order to use PYBLUEZ"
-sudo apt-get install bluez libbluetooth-dev -y
-sudo pip install pybluez
+sudo apt-get install bluez libbluetooth-dev -y > /dev/null
+sudo pip install pybluez > /dev/null
 
-
-echo "Installing ruby and rails"
-sudo apt-get update
-sudo apt-get install git-core curl zlib1g-dev build-essential libssl-dev libreadline-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt1-dev libcurl4-openssl-dev python-software-properties libffi-dev nodejs > /dev/null
-cd
-git clone https://github.com/rbenv/rbenv.git ~/.rbenv
-echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc
-echo 'eval "$(rbenv init -)"' >> ~/.bashrc
-git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build
-echo 'export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"' >> ~/.bashrc
-rbenv install 2.4.1
-rbenv global 2.4.1
-ruby -v
-gem install bundler
-rbenv rehash
-sudo apt-get install -y nodejs
-gem install rails -v 5.1.3
-rbenv rehash
-sudo apt-get install mysql-server mysql-client libmysqlclient-dev
-
+if false; then #Need condition
+  echo "Installing ruby and rails"
+  sudo apt-get update
+  sudo apt-get install git-core curl zlib1g-dev build-essential libssl-dev libreadline-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt1-dev libcurl4-openssl-dev python-software-properties libffi-dev nodejs > /dev/null
+  cd
+  git clone https://github.com/rbenv/rbenv.git ~/.rbenv
+  echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc
+  echo 'eval "$(rbenv init -)"' >> ~/.bashrc
+  git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build
+  echo 'export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"' >> ~/.bashrc
+  rbenv install 2.4.1
+  rbenv global 2.4.1
+  ruby -v
+  gem install bundler
+  rbenv rehash
+  sudo apt-get install -y nodejs
+  gem install rails -v 5.1.3
+  rbenv rehash
+  sudo apt-get install mysql-server mysql-client libmysqlclient-dev
+fi
 
 if ! [ -x "$(command -v atom)" ]; then
   echo "Downloading and Installing Atom Editor"
