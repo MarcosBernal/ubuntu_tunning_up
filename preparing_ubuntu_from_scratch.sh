@@ -1,10 +1,10 @@
 #!/bin/bash
 
-
-#echo "Adding custom aliases"
-./installing_aliases.sh
-source ~/.bashrc
-
+if ! [ -x "$(command -v monitor)" ]; then
+  echo "Adding custom aliases"
+  ./installing_aliases.sh
+  source ~/.bashrc
+fi
 
 echo "Moving to home folder"
 cd ~
@@ -72,22 +72,26 @@ if ! [ -x "$(command -v mongo)" ]; then
 fi
 
 
-echo "Downloading and installing RoboMongo IDE..."
-wget https://download.robomongo.org/1.0.0/linux/robomongo-1.0.0-linux-x86_64-89f24ea.tar.gz > /dev/null
-tar -xvzf robomongo-1.0.0-linux-x86_64-89f24ea.tar.gz
-chmod +x robomongo-1.0.0-linux-x86_64-89f24ea/bin/robomongo
-sudo mkdir /usr/local/bin/robomongo-1.0.0
-sudo mv  robomongo-1.0.0-linux-x86_64-89f24ea/* /usr/local/bin/robomongo-1.0.0
-echo export PATH=/usr/local/bin/robomongo-1.0.0/bin:$PATH >> ~/.bashrc
-rm robomongo-1.0.0-linux-x86_64-89f24ea.tar.gz
-rm -r robomongo-1.0.0-linux-x86_64-89f24ea
+if ! [ -x "$(command -v robomongo)"]
+  echo "Downloading and installing RoboMongo IDE..."
+  wget -O robomongo.tar.gz https://download.robomongo.org/1.0.0/linux/robomongo-1.0.0-linux-x86_64-89f24ea.tar.gz > /dev/null
+  mkdir -p robomongo_folder && tar -xvzf robomongo.tar.gz -C robomongo_folder --strip-components 1
+  chmod +x robomongo_folder/bin/robomongo
+  sudo mkdir /usr/local/bin/robomongo-1.0.0
+  sudo mv  robomongo_folder/* /usr/local/bin/robomongo-1.0.0
+  echo export PATH=/usr/local/bin/robomongo-1.0.0/bin:$PATH >> ~/.bashrc
+  rm robomongo.tar.gz
+  rm -r robomongo_folder
+fi
 
 
-echo "Downloading and installing Dropbox..."
-wget -O delete_dropbox https://www.dropbox.com/download?plat=lnx.x86_64
-tar xzf delete_dropbox
-./.dropbox-dist/dropboxd &
-rm delete_dropbox
+if ! [ -x "$(command -v ~/.dropbox-dist/dropboxd)" ]; then
+  echo "Downloading and installing Dropbox..."
+  wget -O delete_dropbox https://www.dropbox.com/download?plat=lnx.x86_64
+  tar xzf delete_dropbox
+  ./.dropbox-dist/dropboxd &
+  rm delete_dropbox
+fi
 
 
 if ! [ -x "$(command -v spotify)" ]; then
@@ -147,6 +151,7 @@ sudo apt-get install vlc openshot -y
 echo "Installing bluetooth libraries and dependencies in order to use PYBLUEZ"
 sudo apt-get install bluez libbluetooth-dev -y
 sudo pip install pybluez
+
 
 echo "Installing ruby and rails"
 sudo apt-get update
