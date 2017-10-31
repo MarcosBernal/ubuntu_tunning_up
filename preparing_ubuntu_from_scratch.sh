@@ -27,13 +27,11 @@ pip install --upgrade pip > /dev/null;
 
 if ! [ -x "$(command -v subl)" ]; then
   echo "Downloading and installing SUBLIME Text v3126..."
-  wget https://download.sublimetext.com/sublime-text_build-3126_amd64.deb > /dev/null
-  sudo dpkg -i sublime-text_build-3126_amd64.deb  > /dev/null
-  mv ~/.local/share/applications/sublime_text.desktop ~/.local/share/applications/sublime_text.desktop.old
-  cp /usr/share/applications/sublime_text.desktop ~/.local/share/applications/sublime_text.desktop
-  sudo update-desktop-database
-  rm sublime-text_build-3126_amd64.deb
+  wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | sudo apt-key add -
+  sudo apt-get install apt-transport-https -y > /dev/null
+  echo "deb https://download.sublimetext.com/ apt/stable/" | sudo tee /etc/apt/sources.list.d/sublime-text.list
   sudo apt-get update > /dev/null
+  sudo apt-get install sublime-text -y > /dev/null
 fi
 
 
